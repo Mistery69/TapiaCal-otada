@@ -22,7 +22,7 @@
         input, select, button { 
             margin: 10px 0; 
             padding: 10px; 
-            width: 100%; 
+            width: 90%; /* Centrado */
             border-radius: 5px; 
             border: 2px solid #007bff; /* Resaltado */
             font-size: 16px;
@@ -83,6 +83,12 @@
             font-weight: bold;
             color: #333;
         }
+        .restaurant-img { 
+            width: 70%; 
+            max-width: 500px; 
+            border-radius: 10px; 
+            margin-top: 10px; 
+        }
     </style>
 </head>
 <body>
@@ -94,6 +100,9 @@
 
     <!-- 📅 Fecha del Evento -->
     <h1 class="event-date">📅 8 de Març - CALÇOTADA 🔥</h1>
+
+    <!-- 🧅 Imagen de los Calçots -->
+    <img src="20c3fe358d5e-portada-adobe-calsots-t.webp" alt="Calçots" class="restaurant-img">
 
     <div class="container">
         <h2>📝 COMANDES</h2>
@@ -148,7 +157,7 @@
         // 📝 Agregar pedido a Firebase
         window.agregarPedido = function () {
             let nombre = document.getElementById("nombre").value.trim();
-            let menu = document.getElementById("menu").selectedOptions[0].text; // Guarda el nombre COMPLETO del menú
+            let menu = document.getElementById("menu").selectedOptions[0].text;
             let emoji = emojis[Math.floor(Math.random() * emojis.length)];
 
             if (!nombre) {

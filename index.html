@@ -24,7 +24,7 @@
             padding: 10px; 
             width: 100%; 
             border-radius: 5px; 
-            border: 2px solid #007bff; /* Resaltado */
+            border: 2px solid #007bff; 
             font-size: 16px;
             font-weight: bold;
             text-align: center;
@@ -77,22 +77,29 @@
             color: #333; 
             margin-bottom: 10px; 
         }
-        /* 🔥 Resaltado de etiquetas */
         label {
             font-size: 18px;
             font-weight: bold;
             color: #333;
         }
+        .image-container img {
+            width: 80%;
+            max-width: 600px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
-    <!-- 🏠 Nombre del Restaurante en GRANDE -->
     <h1 class="restaurant-title">Restaurant Tapia</h1>
 
-    <!-- 🔥 Imagen del Restaurante -->
-    <img src="IMG-20190102-WA0004.jpeg" alt="Restaurante" class="restaurant-img">
+    <div class="image-container">
+        <img src="IMG-20190102-WA0004.jpeg" alt="Restaurante">
+        <img src="20c3fe358d5e-portada-adobe-calsots-t.webp" alt="Calçots">
+        <img src="2024-04-06.jpeg" alt="Plato Especial">
+    </div>
 
-    <!-- 📅 Fecha del Evento -->
     <h1 class="event-date">📅 8 de Març - CALÇOTADA 🔥</h1>
 
     <div class="container">
@@ -122,77 +129,42 @@
         </table>
     </div>
 
-    <!-- 🔥 SDK de Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-
-        // 🔥 Configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCgkqNMHYJqj6QxqOYfn4d1FjFuKCAzNFk",
-            authDomain: "tapia-b5f2a.firebaseapp.com",
-            projectId: "tapia-b5f2a",
-            storageBucket: "tapia-b5f2a.appspot.com",
-            messagingSenderId: "320752414893",
-            appId: "1:320752414893:web:d1a99875ca7bc30a531624",
-            measurementId: "G-M2FVKKG5S6",
-            databaseURL: "https://tapia-b5f2a-default-rtdb.europe-west1.firebasedatabase.app/"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        // 🎭 Emojis aleatorios para usuarios
-        const emojis = ["😃", "😂", "😎", "🤩", "😇", "🥳", "🧐", "🤠", "👽", "🎩"];
-
-        // 📝 Agregar pedido a Firebase
-        window.agregarPedido = function () {
-            let nombre = document.getElementById("nombre").value.trim();
-            let menu = document.getElementById("menu").selectedOptions[0].text; // Guarda el nombre COMPLETO del menú
-            let emoji = emojis[Math.floor(Math.random() * emojis.length)];
-
-            if (!nombre) {
-                alert("Escriu el teu nom.");
-                return;
-            }
-
-            let nuevoPedidoRef = push(ref(db, "pedidos"));
-            set(nuevoPedidoRef, {
-                nombre: nombre,
-                menu: menu,
-                emoji: emoji
-            });
-
-            document.getElementById("nombre").value = "";
-        };
-
-        // 📜 Cargar pedidos en tiempo real
-        function cargarPedidos() {
-            onValue(ref(db, "pedidos"), (snapshot) => {
-                let lista = document.getElementById("listaPedidos");
-                lista.innerHTML = "";
-
-                snapshot.forEach((childSnapshot) => {
-                    let pedido = childSnapshot.val();
-                    let key = childSnapshot.key;
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let listaPedidos = document.getElementById("listaPedidos");
+            let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+            const emojis = ["😃", "😂", "😎", "🤩", "😇", "🥳", "🧐", "🤠", "👽", "🎩"];
+            function actualizarLista() {
+                listaPedidos.innerHTML = "";
+                pedidos.forEach((pedido, index) => {
                     let fila = `<tr>
                         <td>${pedido.nombre}</td>
                         <td>${pedido.menu}</td>
                         <td>${pedido.emoji || "🎭"}</td>
-                        <td><button class="delete-btn" onclick="eliminarPedido('${key}')">Eliminar</button></td>
+                        <td><button class="delete-btn" onclick="eliminarPedido(${index})">Eliminar</button></td>
                     </tr>`;
-                    lista.innerHTML += fila;
+                    listaPedidos.innerHTML += fila;
                 });
-            });
-        }
-
-        window.eliminarPedido = function (key) {
-            if (!confirm("Segur que vols eliminar la comanda?")) return;
-            remove(ref(db, "pedidos/" + key));
-        };
-
-        document.addEventListener("DOMContentLoaded", cargarPedidos);
+            }
+            window.agregarPedido = function() {
+                let nombre = document.getElementById("nombre").value.trim();
+                let menu = document.getElementById("menu").value;
+                if (!nombre) {
+                    alert("Escriu el teu nom.");
+                    return;
+                }
+                let emoji = emojis[Math.floor(Math.random() * emojis.length)];
+                pedidos.push({ nombre, menu, emoji });
+                localStorage.setItem("pedidos", JSON.stringify(pedidos));
+                actualizarLista();
+            };
+            window.eliminarPedido = function(index) {
+                pedidos.splice(index, 1);
+                localStorage.setItem("pedidos", JSON.stringify(pedidos));
+                actualizarLista();
+            };
+            actualizarLista();
+        });
     </script>
 </body>
 </html>

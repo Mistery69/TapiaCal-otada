@@ -24,7 +24,7 @@
             padding: 10px; 
             width: 100%; 
             border-radius: 5px; 
-            border: 2px solid #007bff; /* Resaltado de recuadros */
+            border: 2px solid #007bff; /* Resaltado */
             font-size: 16px;
             font-weight: bold;
             text-align: center;
@@ -65,12 +65,6 @@
         .delete-btn:hover { 
             background-color: darkred; 
         }
-        .menu-img { 
-            width: 35px; 
-            height: 35px; 
-            border-radius: 5px; 
-            object-fit: cover; 
-        }
         .event-date { 
             font-size: 26px; 
             font-weight: bold; 
@@ -82,12 +76,6 @@
             font-weight: bold; 
             color: #333; 
             margin-bottom: 10px; 
-        }
-        .restaurant-img { 
-            width: 70%; 
-            max-width: 500px; 
-            border-radius: 10px; 
-            margin-top: 10px; 
         }
         /* 🔥 Resaltado de etiquetas */
         label {
@@ -107,19 +95,16 @@
     <!-- 📅 Fecha del Evento -->
     <h1 class="event-date">📅 8 de Març - CALÇOTADA 🔥</h1>
 
-    <!-- 🧅 Imagen divertida de los Calçots -->
-    <img src="20c3fe358d5e-portada-adobe-calsots-t.webp" alt="Calçots" class="restaurant-img">
-
     <div class="container">
         <h2>📝 COMANDES</h2>
         <label for="nombre">✨ Escriu el teu nom:</label>
         <input type="text" id="nombre" placeholder="Escriu el teu nom">
         <label for="menu">🍽️ Menú:</label>
         <select id="menu">
-            <option value="MENU 1">MENU 1: CALÇOTADA + BUTIFARRA</option>
-            <option value="MENU 2">MENU 2: CALÇOTADA XAI</option>
-            <option value="MENU 3">MENU 3: CALÇOTADA Y CARTA</option>
-            <option value="MENU 4">MENU 4: CARTA</option>
+            <option value="MENU 1: CALÇOTADA + BUTIFARRA">MENU 1: CALÇOTADA + BUTIFARRA</option>
+            <option value="MENU 2: CALÇOTADA XAI">MENU 2: CALÇOTADA XAI</option>
+            <option value="MENU 3: CALÇOTADA Y CARTA">MENU 3: CALÇOTADA Y CARTA</option>
+            <option value="MENU 4: CARTA">MENU 4: CARTA</option>
         </select>
         <button onclick="agregarPedido()">✅ AFEGIR COMANDA</button>
 
@@ -163,7 +148,7 @@
         // 📝 Agregar pedido a Firebase
         window.agregarPedido = function () {
             let nombre = document.getElementById("nombre").value.trim();
-            let menu = document.getElementById("menu").value;
+            let menu = document.getElementById("menu").selectedOptions[0].text; // Guarda el nombre COMPLETO del menú
             let emoji = emojis[Math.floor(Math.random() * emojis.length)];
 
             if (!nombre) {
@@ -211,3 +196,4 @@
     </script>
 </body>
 </html>
+

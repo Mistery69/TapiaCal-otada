@@ -3,24 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calçotada 8 de Marzo</title>
+    <title>Restaurant Tapia - Calçotada</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f8f9fa; margin: 20px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
-        input, select, button { margin: 10px 0; padding: 10px; width: 100%; border-radius: 5px; border: 1px solid #ddd; }
-        button { background-color: #28a745; color: white; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #218838; }
-        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #007bff; color: white; }
-        .delete-btn { background-color: red; color: white; padding: 5px 10px; border: none; cursor: pointer; }
-        .delete-btn:hover { background-color: darkred; }
-        .menu-img { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; }
-        .event-date { font-size: 30px; font-weight: bold; margin-top: 10px; color: #d9534f; }
-        .restaurant-img { width: 80%; max-width: 600px; border-radius: 10px; margin-top: 10px; }
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #f8f9fa; 
+            margin: 20px; 
+        }
+        .container { 
+            max-width: 600px; 
+            margin: auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1); 
+        }
+        input, select, button { 
+            margin: 10px 0; 
+            padding: 10px; 
+            width: 100%; 
+            border-radius: 5px; 
+            border: 1px solid #ddd; 
+        }
+        button { 
+            background-color: #28a745; 
+            color: white; 
+            cursor: pointer; 
+            font-weight: bold; 
+        }
+        button:hover { 
+            background-color: #218838; 
+        }
+        table { 
+            width: 100%; 
+            margin-top: 20px; 
+            border-collapse: collapse; 
+            border: 2px solid #333; 
+            background: white; 
+        }
+        th, td { 
+            border: 2px solid #333; 
+            padding: 12px; 
+            text-align: center; 
+            font-size: 16px; 
+        }
+        th { 
+            background-color: #007bff; 
+            color: white; 
+        }
+        .delete-btn { 
+            background-color: red; 
+            color: white; 
+            padding: 5px 10px; 
+            border: none; 
+            cursor: pointer; 
+        }
+        .delete-btn:hover { 
+            background-color: darkred; 
+        }
+        .menu-img { 
+            width: 35px; 
+            height: 35px; 
+            border-radius: 5px; 
+            object-fit: cover; 
+        }
+        .event-date { 
+            font-size: 26px; 
+            font-weight: bold; 
+            margin-top: 10px; 
+            color: #d9534f; 
+        }
+        .restaurant-title { 
+            font-size: 36px; 
+            font-weight: bold; 
+            color: #333; 
+            margin-bottom: 10px; 
+        }
+        .restaurant-img { 
+            width: 70%; 
+            max-width: 500px; 
+            border-radius: 10px; 
+            margin-top: 10px; 
+        }
     </style>
 </head>
 <body>
+    <!-- 🏠 Nombre del Restaurante en GRANDE -->
+    <h1 class="restaurant-title">Restaurant Tapia</h1>
+
     <!-- 🔥 Imagen del Restaurante -->
     <img src="IMG-20190102-WA0004.jpeg" alt="Restaurante" class="restaurant-img">
 
@@ -31,9 +102,9 @@
     <img src="20c3fe358d5e-portada-adobe-calsots-t.webp" alt="Calçots" class="restaurant-img">
 
     <div class="container">
-        <h2>Pedidos de Comida</h2>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" placeholder="Ingresa tu nombre">
+        <h2>📝 COMANDES</h2>
+        <label for="nombre">Nom:</label>
+        <input type="text" id="nombre" placeholder="Escriu el teu nom">
         <label for="menu">Menú:</label>
         <select id="menu">
             <option value="MENU 1">MENU 1: CALÇOTADA + BUTIFARRA</option>
@@ -41,15 +112,15 @@
             <option value="MENU 3">MENU 3: CALÇOTADA Y CARTA</option>
             <option value="MENU 4">MENU 4: CARTA</option>
         </select>
-        <button onclick="agregarPedido()">✅ Agregar Pedido</button>
+        <button onclick="agregarPedido()">✅ AFEGIR COMANDA</button>
 
-        <h3>📜 Lista de Pedidos</h3>
+        <h3>📜 LLISTA DE COMANDES</h3>
         <table>
             <thead>
                 <tr>
-                    <th>👤 Nombre</th>
+                    <th>👤 Nom</th>
                     <th>🍽️ Menú</th>
-                    <th>🖼️ Imagen</th>
+                    <th>🖼️ Imatge</th>
                     <th>❌ Eliminar</th>
                 </tr>
             </thead>
@@ -79,10 +150,10 @@
 
         // 📸 Imágenes para cada menú
         const imagenesMenus = {
-            "MENU 1": "https://via.placeholder.com/40?text=🍖", 
-            "MENU 2": "https://via.placeholder.com/40?text=🐑",
-            "MENU 3": "https://via.placeholder.com/40?text=📜",
-            "MENU 4": "https://via.placeholder.com/40?text=🍽️"
+            "MENU 1": "https://via.placeholder.com/35?text=🍖", 
+            "MENU 2": "https://via.placeholder.com/35?text=🐑",
+            "MENU 3": "https://via.placeholder.com/35?text=📜",
+            "MENU 4": "https://via.placeholder.com/35?text=🍽️"
         };
 
         // 📝 Agregar pedido a Firebase
@@ -91,7 +162,7 @@
             let menu = document.getElementById("menu").value;
 
             if (!nombre) {
-                alert("Por favor, ingresa tu nombre.");
+                alert("Escriu el teu nom.");
                 return;
             }
 
@@ -113,7 +184,7 @@
                 snapshot.forEach((childSnapshot) => {
                     let pedido = childSnapshot.val();
                     let key = childSnapshot.key;
-                    let imagen = imagenesMenus[pedido.menu] || "https://via.placeholder.com/40?text=❓";
+                    let imagen = imagenesMenus[pedido.menu] || "https://via.placeholder.com/35?text=❓";
 
                     let fila = `<tr>
                         <td>${pedido.nombre}</td>
@@ -126,13 +197,11 @@
             });
         }
 
-        // 🗑️ Eliminar pedido de Firebase
         window.eliminarPedido = function (key) {
-            if (!confirm("¿Seguro que quieres eliminar este pedido?")) return;
+            if (!confirm("Segur que vols eliminar la comanda?")) return;
             remove(ref(db, "pedidos/" + key));
         };
 
-        // 🚀 Cargar pedidos al iniciar la página
         document.addEventListener("DOMContentLoaded", cargarPedidos);
     </script>
 </body>

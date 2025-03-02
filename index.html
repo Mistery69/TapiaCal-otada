@@ -15,9 +15,9 @@
         th { background-color: #007bff; color: white; }
         .delete-btn { background-color: red; color: white; padding: 5px 10px; border: none; cursor: pointer; }
         .delete-btn:hover { background-color: darkred; }
-        .menu-img { width: 50px; height: 50px; border-radius: 5px; }
+        .menu-img { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; }
         .event-date { font-size: 30px; font-weight: bold; margin-top: 10px; color: #d9534f; }
-        .restaurant-img { width: 100%; border-radius: 10px; margin-top: 10px; }
+        .restaurant-img { width: 80%; max-width: 600px; border-radius: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -47,7 +47,6 @@
         <table>
             <thead>
                 <tr>
-                    <th>📅 Fecha</th>
                     <th>👤 Nombre</th>
                     <th>🍽️ Menú</th>
                     <th>🖼️ Imagen</th>
@@ -80,17 +79,16 @@
 
         // 📸 Imágenes para cada menú
         const imagenesMenus = {
-            "MENU 1": "https://via.placeholder.com/50?text=🍖", 
-            "MENU 2": "https://via.placeholder.com/50?text=🐑",
-            "MENU 3": "https://via.placeholder.com/50?text=📜",
-            "MENU 4": "https://via.placeholder.com/50?text=🍽️"
+            "MENU 1": "https://via.placeholder.com/40?text=🍖", 
+            "MENU 2": "https://via.placeholder.com/40?text=🐑",
+            "MENU 3": "https://via.placeholder.com/40?text=📜",
+            "MENU 4": "https://via.placeholder.com/40?text=🍽️"
         };
 
         // 📝 Agregar pedido a Firebase
         window.agregarPedido = function () {
             let nombre = document.getElementById("nombre").value.trim();
             let menu = document.getElementById("menu").value;
-            let fecha = new Date().toLocaleString("es-ES"); // 🔥 Agregar fecha y hora
 
             if (!nombre) {
                 alert("Por favor, ingresa tu nombre.");
@@ -100,8 +98,7 @@
             let nuevoPedidoRef = push(ref(db, "pedidos"));
             set(nuevoPedidoRef, {
                 nombre: nombre,
-                menu: menu,
-                fecha: fecha
+                menu: menu
             });
 
             document.getElementById("nombre").value = "";
@@ -116,10 +113,9 @@
                 snapshot.forEach((childSnapshot) => {
                     let pedido = childSnapshot.val();
                     let key = childSnapshot.key;
-                    let imagen = imagenesMenus[pedido.menu] || "https://via.placeholder.com/50?text=❓";
+                    let imagen = imagenesMenus[pedido.menu] || "https://via.placeholder.com/40?text=❓";
 
                     let fila = `<tr>
-                        <td>${pedido.fecha}</td>
                         <td>${pedido.nombre}</td>
                         <td>${pedido.menu}</td>
                         <td><img src="${imagen}" class="menu-img"></td>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -147,6 +149,26 @@
         const db = getDatabase(app);
         const emojis = ["😃", "😂", "😎", "🤩", "😇", "🥳", "🧐", "🤠", "👽", "🎩"];
 
+        function agregarPedido() {
+            let nombre = document.getElementById("nombre").value.trim();
+            let menu = document.getElementById("menu").selectedOptions[0].text; 
+            let emoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+            if (!nombre) {
+                alert("Escriu el teu nom.");
+                return;
+            }
+
+            let nuevoPedidoRef = push(ref(db, "pedidos"));
+            set(nuevoPedidoRef, {
+                nombre: nombre,
+                menu: menu,
+                emoji: emoji
+            });
+
+            document.getElementById("nombre").value = "";
+        }
+
         function cargarPedidos() {
             onValue(ref(db, "pedidos"), (snapshot) => {
                 let lista = document.getElementById("listaPedidos");
@@ -165,26 +187,14 @@
             });
         }
 
-        window.agregarPedido = function () {
-            let nombre = document.getElementById("nombre").value.trim();
-            let menu = document.getElementById("menu").value;
-            let emoji = emojis[Math.floor(Math.random() * emojis.length)];
-            if (!nombre) {
-                alert("Escriu el teu nom.");
-                return;
-            }
-            let nuevoPedidoRef = push(ref(db, "pedidos"));
-            set(nuevoPedidoRef, { nombre, menu, emoji }).then(() => {
-                document.getElementById("nombre").value = "";
-            });
-        };
-
-        window.eliminarPedido = function (key) {
+        function eliminarPedido(key) {
+            if (!confirm("Segur que vols eliminar la comanda?")) return;
             remove(ref(db, "pedidos/" + key));
-        };
+        }
 
         document.addEventListener("DOMContentLoaded", cargarPedidos);
+        window.agregarPedido = agregarPedido;
+        window.eliminarPedido = eliminarPedido;
     </script>
 </body>
 </html>
-

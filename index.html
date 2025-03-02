@@ -24,7 +24,10 @@
             padding: 10px; 
             width: 100%; 
             border-radius: 5px; 
-            border: 1px solid #ddd; 
+            border: 2px solid #007bff; /* Resaltado de recuadros */
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
         }
         button { 
             background-color: #28a745; 
@@ -126,7 +129,7 @@
                 <tr>
                     <th>👤 Nom</th>
                     <th>🍽️ Menú</th>
-                    <th>🖼️ Imatge</th>
+                    <th>🎭 Emoji</th>
                     <th>❌ Eliminar</th>
                 </tr>
             </thead>
@@ -154,18 +157,14 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // 📸 Imágenes para cada menú
-        const imagenesMenus = {
-            "MENU 1": "https://via.placeholder.com/35?text=🍖", 
-            "MENU 2": "https://via.placeholder.com/35?text=🐑",
-            "MENU 3": "https://via.placeholder.com/35?text=📜",
-            "MENU 4": "https://via.placeholder.com/35?text=🍽️"
-        };
+        // 🎭 Emojis aleatorios para usuarios
+        const emojis = ["😃", "😂", "😎", "🤩", "😇", "🥳", "🧐", "🤠", "👽", "🎩"];
 
         // 📝 Agregar pedido a Firebase
         window.agregarPedido = function () {
             let nombre = document.getElementById("nombre").value.trim();
             let menu = document.getElementById("menu").value;
+            let emoji = emojis[Math.floor(Math.random() * emojis.length)];
 
             if (!nombre) {
                 alert("Escriu el teu nom.");
@@ -175,7 +174,8 @@
             let nuevoPedidoRef = push(ref(db, "pedidos"));
             set(nuevoPedidoRef, {
                 nombre: nombre,
-                menu: menu
+                menu: menu,
+                emoji: emoji
             });
 
             document.getElementById("nombre").value = "";
@@ -190,12 +190,11 @@
                 snapshot.forEach((childSnapshot) => {
                     let pedido = childSnapshot.val();
                     let key = childSnapshot.key;
-                    let imagen = imagenesMenus[pedido.menu] || "https://via.placeholder.com/35?text=❓";
 
                     let fila = `<tr>
                         <td>${pedido.nombre}</td>
                         <td>${pedido.menu}</td>
-                        <td><img src="${imagen}" class="menu-img"></td>
+                        <td>${pedido.emoji || "🎭"}</td>
                         <td><button class="delete-btn" onclick="eliminarPedido('${key}')">Eliminar</button></td>
                     </tr>`;
                     lista.innerHTML += fila;

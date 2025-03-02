@@ -129,42 +129,60 @@
         </table>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let listaPedidos = document.getElementById("listaPedidos");
-            let pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
-            const emojis = ["😃", "😂", "😎", "🤩", "😇", "🥳", "🧐", "🤠", "👽", "🎩"];
-            function actualizarLista() {
-                listaPedidos.innerHTML = "";
-                pedidos.forEach((pedido, index) => {
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY",
+            authDomain: "TU_AUTH_DOMAIN",
+            databaseURL: "TU_DATABASE_URL",
+            projectId: "TU_PROJECT_ID",
+            storageBucket: "TU_STORAGE_BUCKET",
+            messagingSenderId: "TU_MESSAGING_SENDER_ID",
+            appId: "TU_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const emojis = ["😃", "😂", "😎", "🤩", "😇", "🥳", "🧐", "🤠", "👽", "🎩"];
+
+        function cargarPedidos() {
+            onValue(ref(db, "pedidos"), (snapshot) => {
+                let lista = document.getElementById("listaPedidos");
+                lista.innerHTML = "";
+                snapshot.forEach((childSnapshot) => {
+                    let pedido = childSnapshot.val();
+                    let key = childSnapshot.key;
                     let fila = `<tr>
                         <td>${pedido.nombre}</td>
                         <td>${pedido.menu}</td>
                         <td>${pedido.emoji || "🎭"}</td>
-                        <td><button class="delete-btn" onclick="eliminarPedido(${index})">Eliminar</button></td>
+                        <td><button class="delete-btn" onclick="eliminarPedido('${key}')">Eliminar</button></td>
                     </tr>`;
-                    listaPedidos.innerHTML += fila;
+                    lista.innerHTML += fila;
                 });
+            });
+        }
+
+        window.agregarPedido = function () {
+            let nombre = document.getElementById("nombre").value.trim();
+            let menu = document.getElementById("menu").value;
+            let emoji = emojis[Math.floor(Math.random() * emojis.length)];
+            if (!nombre) {
+                alert("Escriu el teu nom.");
+                return;
             }
-            window.agregarPedido = function() {
-                let nombre = document.getElementById("nombre").value.trim();
-                let menu = document.getElementById("menu").value;
-                if (!nombre) {
-                    alert("Escriu el teu nom.");
-                    return;
-                }
-                let emoji = emojis[Math.floor(Math.random() * emojis.length)];
-                pedidos.push({ nombre, menu, emoji });
-                localStorage.setItem("pedidos", JSON.stringify(pedidos));
-                actualizarLista();
-            };
-            window.eliminarPedido = function(index) {
-                pedidos.splice(index, 1);
-                localStorage.setItem("pedidos", JSON.stringify(pedidos));
-                actualizarLista();
-            };
-            actualizarLista();
-        });
+            let nuevoPedidoRef = push(ref(db, "pedidos"));
+            set(nuevoPedidoRef, { nombre, menu, emoji });
+        };
+
+        window.eliminarPedido = function (key) {
+            remove(ref(db, "pedidos/" + key));
+        };
+
+        document.addEventListener("DOMContentLoaded", cargarPedidos);
     </script>
 </body>
 </html>
+
